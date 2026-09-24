@@ -125,15 +125,27 @@ public:
     }
     
     int length(ListNode* head) {
-    int count = 0;
-    ListNode* current = head;
+        int count = 0;
+        ListNode* current = head;
 
-    while (current != nullptr) {
-        count++;
-        current = current->next;
+        while (current != nullptr) {
+            count++;
+            current = current->next;
+        }
+
+        return count;
     }
 
-    return count;
+    ListNode* reverseLL(ListNode* &head){
+        ListNode* temp=head;
+        ListNode* previous=nullptr;
+        ListNode* current=head;
+        while(current->next !=nullptr){
+            current->next=temp;
+            current->next=previous;
+            previous=current;
+            current=temp;
+        }
     }
 };
 
@@ -180,6 +192,7 @@ int main() {
     for (int x : result) {
         cout << x << " ";
     }
+    cout<<"reversed linked list with remaining elements is: "<<endl;
 
     return 0;
 }
