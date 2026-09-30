@@ -140,12 +140,14 @@ public:
         ListNode* temp=head;
         ListNode* previous=nullptr;
         ListNode* current=head;
-        while(current->next !=nullptr){
-            current->next=temp;
+        while(current !=nullptr){
+            temp=current->next;
             current->next=previous;
             previous=current;
             current=temp;
         }
+        head=previous;
+        return head;
     }
 };
 
@@ -191,8 +193,13 @@ int main() {
     cout<<"result after deleting kth element: "<<endl;
     for (int x : result) {
         cout << x << " ";
-    }
+    } 
     cout<<"reversed linked list with remaining elements is: "<<endl;
+    head=obj.reverseLL(head);
+    result=obj.LLTraversal(head);
+    for (int x : result) {
+        cout << x << " ";
+    }
 
     return 0;
 }
