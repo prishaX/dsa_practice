@@ -10,7 +10,7 @@ public:
     //to create nd allocate memory for stack
     
     void push(int element){
-        if (top < size){
+        if (top < size - 1){
             top++;
             arr[top]=element;
         }
@@ -20,7 +20,7 @@ public:
     }
 
     void pop(){
-        if (top>0){
+        if (top>=0){
             top--;
         }
         else { 
@@ -29,17 +29,18 @@ public:
     }
 
     int peek(){
-        if (top >=0 && top <=size){
+        if (top >=0 ){
             return arr[top];
         }
         else {
             cout<<" the stack is empty"<<endl;
+            return -1;
         }
 
     }
 
     bool isEmpty(){
-        if(top==0){
+        if(top==-1){
             return true;
         }
         else{
@@ -124,23 +125,48 @@ string postfixtoprefix(string s){
     return stk.top();
 }
 
-string infixtoprefix(string s){
-    stack<string> stk;
-    for (int i=0;i<s.length();i++){
-        char c= s[i];
-        if(isalnum(c)){
-            stk.push(string(1,c));
+int precedence(char c) {
+    if (c == '^') return 3;
+    if (c == '*' || c == '/') return 2;
+    if (c == '+' || c == '-') return 1;
+    return 0;
+}
+
+string infixtopostfix(string s) {
+    stack<char> st;
+    string output = "";
+    for (int i = 0; i < s.length(); i++) {
+        char c = s[i];
+        if (isalpha(c)) {
+            output += c;
+        }
+        else if (c == '(') {
+            st.push(c);
+        }
+        else if (c == ')') {
+            while (!st.empty() && st.top() != '(') {
+                output += st.top();
+                st.pop();
+            }
+            st.pop();  
         }
         else {
-            string o1=stk.top();
-            stk.pop();
-            string o2=stk.top();
-            stk.pop();
-            stk.push("("+o1+o2+c+")");
+           while (!st.empty() && st.top() != '(' && (precedence(st.top()) > precedence(c) || (precedence(st.top()) == precedence(c) && c != '^'))) {
+                output += st.top();
+                st.pop();
+            }
+            st.push(c);
         }
     }
-    return stk.top();
+    while (!st.empty()) {
+        output += st.top();
+        st.pop();
+    }
+
+    return output;
 }
+
+
 
 int main(){
 
